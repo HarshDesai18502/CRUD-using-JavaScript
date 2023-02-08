@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Management System</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="app.js" defer></script>
+    </head>
+  <body>
+
+
+    <div id="backdrop"></div>
+    
+    <!--Header-->
+    <header>
+      <h1>Product Management System</h1>
+      <button>Add Product</button>
+    </header>
+
+
+    <!--Popup to add a product-->
+    <div id="add-popup">
+      <div class="heading">Add a Product</div>
+      <div class="middle">
+        <label for="title">Enter Title:</label> <br />
+        <input type="text" id="title" /> <br />
+        <label for="imageUrl">Enter Image URL:</label> <br>
+        <input type="text" id="imageUrl" /> <br />
+        <label for="price">Enter Price:</label> <br>
+        <input type="text" id="price" /> <br>
+        <label for="description">Enter Description:</label> <br>
+        <input type="text" id="description">
+      </div>
+      <div class="buttons">
+        <button class="cancel-btn">Cancel</button>
+        <button class="add-btn">Add</button>
+      </div>
+    </div>
+
+    <!--Popup to delete a product-->
+    <div id="delete-popup">
+      <div class="heading">Delete Product</div>
+      <div class="middle">Are you sure you want to delete a product ? This action can't be undo ?</div>
+      <div class="buttons">
+        <button class="cancel-btn">No</button>
+        <button class="add-btn">Yes</button>
+      </div>
+    </div>
+
+
+    <!--Main Section-->
+    <main>
+      <div id="poster">Your Personal Product Collection.</div>
+      <ul id="product-list">
+
+        
+<!-- 
+
+        <li class="product-element">
+          <div class="product-image">
+            <img src="https://stickon-web-mobile-evolution.s3.ap-south-1.amazonaws.com/production/products/base_images/realme-3-pro-newPJQKNQvLYFbwBNHL.png" alt="">
+          </div>
+          <div class="product-description">
+            <h2>Realme 3 pro</h2>
+            <h5>price: 200$</h5>
+            <p>4 GB RAM | 64 GB ROM | Expandable Upto 256 GB
+              16.0 cm (6.3 inch) Full HD+ Display
+              16MP + 5MP | 25MP Front Camera
+              4045 mAh Battery
+              Qualcomm Snapdragon 710 Octa Core 2.2 GHz AIE Processor
+              Dual Nano SIM Slot and Memory Card Slot
+              VOOC Flash Charge 3.0</p>
+            <button class="edit">Edit</button>
+            <button class="delete">Delete</button>
+          </div>
+        </li>
+
+        <li class="product-element">
+          <div class="product-image">
+            <img src="https://stickon-web-mobile-evolution.s3.ap-south-1.amazonaws.com/production/products/base_images/realme-3-pro-newPJQKNQvLYFbwBNHL.png" alt="">
+          </div>
+          <div class="product-description">
+            <h2>Realme 3 pro</h2>
+            <h5>price: 200$</h5>
+            <p>4 GB RAM | 64 GB ROM | Expandable Upto 256 GB
+              16.0 cm (6.3 inch) Full HD+ Display
+              16MP + 5MP | 25MP Front Camera
+              4045 mAh Battery
+              Qualcomm Snapdragon 710 Octa Core 2.2 GHz AIE Processor
+              Dual Nano SIM Slot and Memory Card Slot
+              VOOC Flash Charge 3.0</p>
+            <button class="edit">Edit</button>
+            <button class="delete">Delete</button>
+          </div>
+        </li>
+        -->
+        
+      </ul>
+    </main>
+
+  </body>
+</html>
+
+
