@@ -8,9 +8,9 @@ const addBtn = document.querySelector("#add-popup .add-btn");
 const userInputs = document.querySelectorAll("input");
 const productList = document.getElementById("product-list");
 
-let ProductArray = [];
+let products = [];
 
-let counter = ProductArray.length + 1;
+let counter = products.length + 1;
 
 function clearInputs() {
   userInputs[0].value = "";
@@ -28,7 +28,7 @@ function toggleBackDrop() {
 }
 
 function updateUI() {
-  if (ProductArray.length !== 0) {
+  if (products.length !== 0) {
     poster.style.display = "none";
   } else {
     poster.style.display = "flex";
@@ -87,13 +87,13 @@ function addProductHandler() {
     description,
   };
   console.log(productElement);
-  ProductArray.push(productElement);
+  products.push(productElement);
   // convert array to JSON string using JSON.stringify()
-  const jsonArray = JSON.stringify(ProductArray);
+  const jsonArray = JSON.stringify(products);
 
   // save to localStorage using "array" as the key and jsonArray as the value
   localStorage.setItem("ProductArray", jsonArray);
-  console.log(ProductArray);
+  console.log(products);
   clearInputs();
   toggleAddPopUp();
   toggleBackDrop();
@@ -135,14 +135,14 @@ window.onload = LoadProducts;
 function LoadProducts() {
   const str = localStorage.getItem("ProductArray");
 
-  const ProductArray = JSON.parse(str);
-  if(ProductArray === null) return;
+  const parsedProducts = JSON.parse(str);
+  if(parsedProducts === null) return;
+  
+  products = parsedProducts;
 
   
 
-  
-
-  ProductArray.forEach((product) => {
+  parsedProducts.forEach((product) => {
     const productElement = document.createElement("li");
     productElement.classList.add("product-element");
 
@@ -195,14 +195,28 @@ function getDeleteBtns() {
       const id = this.id;
       
 
+        
+        //location.reload();
 
-      const index = ProductArray.findIndex(product => product.productId ===   this.id);
-      ProductArray.splice(index, 1);
-      console.log(index);
+        // let movieIndex = 0;
+        // for(const product of products) {
+        //     if(product.productId === id) {
+        //         break;
+        //     }
+        //     movieIndex++;
+        // }
+        // products.splice(movieIndex,1);
+        // console.log(movieIndex);
+        // console.log(products);
 
-      const jsonArray = JSON.stringify(ProductArray);
-      localStorage.setItem("ProductArray", jsonArray);
-      LoadProducts();
+        const index = products.findIndex(product => product.productId ===   this.id);
+        products.splice(index, 1);
+        console.log(index);
+
+        const jsonArray = JSON.stringify(products);
+        localStorage.setItem("ProductArray", jsonArray);
+
+        LoadProducts();
     });
   });
 }
