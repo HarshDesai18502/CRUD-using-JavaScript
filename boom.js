@@ -126,10 +126,21 @@ function renderProduct(id, title, imageUrl, price, description) {
     <p>${description}</p>
     <button class="view" id='${id}'>View</button>
     <button class="edit" id='${id}'>Edit</button>
-    <button class="delete" id='${id}'>Delete</button>
+    <button class="delete" id='${id}' onclick = "demo()">Delete</button>
   </div>`;
   productList.appendChild(productElement);
   updateUI();
+}
+
+function demo(){
+  const post = products.find(product => product.productId == id);
+  let index = products.indexOf(post);
+  console.log(index);
+  products.splice(index,1);
+
+  const jsonArray = JSON.stringify(products);
+  localStorage.setItem("ProductArray", jsonArray);
+  productList.children[index].remove();
 }
 
 addBtn.addEventListener("click", addProductHandler);
@@ -194,6 +205,18 @@ function waitForElementToDisplay(
 
 
 
+//For Edit Buttons
+waitForElementToDisplay(".edit", getEditBtns, 1000, 9000);
+function getEditBtns() {
+  const editBtns=document.querySelectorAll(".edit");
+  editBtns.forEach((editBtn)=>{
+    editBtn.addEventListener('click',function() {
+      window.location.replace('./view.html');
+    })
+  })
+  
+}
+
 
 //For Delete Buttons
 waitForElementToDisplay(".delete", getDeleteBtns, 1000, 9000);
@@ -228,11 +251,14 @@ function getDeleteBtns() {
         // }
 
         // getPost();
+        console.log(products);
 
         const post = products.find(product => product.productId == id);
         let index = products.indexOf(post);
         console.log(index);
         products.splice(index,1);
+
+        console.log(products);
 
         // productList.remove(post);
             
@@ -240,7 +266,7 @@ function getDeleteBtns() {
             // // products.splice(index, 1);
             // console.log(index);
             
-        console.log('clicked');
+       
 
         
         // window.location.reload();   
