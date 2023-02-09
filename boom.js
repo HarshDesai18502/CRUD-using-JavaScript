@@ -8,6 +8,9 @@ const addBtn = document.querySelector("#add-popup .add-btn");
 const userInputs = document.querySelectorAll("input");
 const productList = document.getElementById("product-list");
 
+
+
+
 let products = [];
 
 let counter = products.length + 1;
@@ -121,11 +124,23 @@ function renderProduct(id, title, imageUrl, price, description) {
     <h5>price: ${price}</h5>
     <p>Product id : ${id}</p>
     <p>${description}</p>
-    <button class="edit">Edit</button>
-    <button class="delete">Delete</button>
+    <button class="view" id='${id}'>View</button>
+    <button class="edit" id='${id}'>Edit</button>
+    <button class="delete" id='${id}' onclick = "demo()">Delete</button>
   </div>`;
   productList.appendChild(productElement);
   updateUI();
+}
+
+function demo(){
+  const post = products.find(product => product.productId == id);
+  let index = products.indexOf(post);
+  console.log(index);
+  products.splice(index,1);
+
+  const jsonArray = JSON.stringify(products);
+  localStorage.setItem("ProductArray", jsonArray);
+  productList.children[index].remove();
 }
 
 addBtn.addEventListener("click", addProductHandler);
@@ -154,19 +169,20 @@ function LoadProducts() {
     <h5>price: ${product.price}</h5>
     <p>Product id : ${product.productId}</p>
     <p>${product.description}</p>
-    <button class="edit">Edit</button>
+    <button class="view" id='${product.productId}'>View</button>
+    <button class="edit" id='${product.productId}'>Edit</button>
     <button class="delete" id='${product.productId}'>Delete</button>
   </div>`;
     productList.appendChild(productElement);
   });
+  counter = products.length + 1
   updateUI();
 }
 
-//Okkk upto here
+
+
 
 //function to wait for the elment
-waitForElementToDisplay(".delete", getDeleteBtns, 1000, 9000);
-
 function waitForElementToDisplay(
   selector,
   callback,
@@ -187,12 +203,30 @@ function waitForElementToDisplay(
   })();
 }
 
-//get delete buttons
+
+
+//For Edit Buttons
+waitForElementToDisplay(".edit", getEditBtns, 1000, 9000);
+function getEditBtns() {
+  const editBtns=document.querySelectorAll(".edit");
+  editBtns.forEach((editBtn)=>{
+    editBtn.addEventListener('click',function() {
+      window.location.replace('./view.html');
+    })
+  })
+  
+}
+
+
+//For Delete Buttons
+waitForElementToDisplay(".delete", getDeleteBtns, 1000, 9000);
+
 function getDeleteBtns() {
   const deleteBtns = document.querySelectorAll(".delete");
   deleteBtns.forEach((deleteBtn) => {
     deleteBtn.addEventListener("click", function () {
       const id = this.id;
+      console.log(id);
       
 
         
@@ -209,14 +243,40 @@ function getDeleteBtns() {
         // console.log(movieIndex);
         // console.log(products);
 
-        const index = products.findIndex(product => product.productId ===   this.id);
-        products.splice(index, 1);
-        console.log(index);
+        // products = products.filter((product) => product.productId !== idToRemove);
 
+        // let post;
+        // async function getPost() {
+        //     post = await products.find(product => product.productId === id);
+        // }
+
+        // getPost();
+        console.log(products);
+
+        const post = products.find(product => product.productId == id);
+        let index = products.indexOf(post);
+        console.log(index);
+        products.splice(index,1);
+
+        console.log(products);
+
+        // productList.remove(post);
+            
+            // let index = products.findIndex(product => product.productId ===   this.id);
+            // // products.splice(index, 1);
+            // console.log(index);
+            
+       
+
+        
+        // window.location.reload();   
+        // window.location.reload();
         const jsonArray = JSON.stringify(products);
         localStorage.setItem("ProductArray", jsonArray);
-
-        LoadProducts();
+        productList.children[index].remove();
+        //window.location.reload();
+        
+        // LoadProducts();
     });
   });
 }

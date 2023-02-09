@@ -215,6 +215,17 @@ input:focus {
   margin-top: 20px;
 }
 
+.product-element .view {
+  margin-top: 15px;
+  margin-right: 10px;
+  background-color: green;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
 .product-element .edit {
   margin-top: 15px;
   margin-right: 10px;
