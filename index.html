@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product Management System</title>
     <link rel="stylesheet" href="style.css" />
-    <script src="boom.js" defer></script>
+    <script src="app.js" defer></script>
     </head>
   <body>
 
@@ -27,7 +27,7 @@
         <label for="title">Enter Title:</label> <br />
         <input type="text" id="title" /> <br />
         <label for="imageUrl">Enter Image URL:</label> <br>
-        <input type="text" id="imageUrl" /> <br />
+        <input type="url" id="imageUrl" /> <br />
         <label for="price">Enter Price:</label> <br>
         <input type="text" id="price" /> <br>
         <label for="description">Enter Description:</label> <br>
@@ -53,6 +53,15 @@
     <!--Main Section-->
     <main>
       <div id="poster">Your Personal Product Collection.</div>
+      <div class="search">
+        <input type="text" id="search-text" placeholder="Search a Product">
+        <button class="search-btn">Search</button>
+        <button class="clear-btn">Clear</button>
+        <button class="filter-btn">Filter by Price</button>
+        <div class="table-div">
+         
+        </div>
+      </div>
       <ul id="product-list">
       </ul>
     </main>

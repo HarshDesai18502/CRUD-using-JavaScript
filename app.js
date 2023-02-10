@@ -8,12 +8,16 @@ const addBtn = document.querySelector("#add-popup .add-btn");
 const userInputs = document.querySelectorAll("input");
 const productList = document.getElementById("product-list");
 
+const searchText = document.getElementById('search-text');
+const searchBtn = document.querySelector('.search-btn');
+const clearBtn = document.querySelector('.clear-btn');
+const divTable = document.querySelector('.table-div');
 
-
+const filterBtn = document.querySelector('.filter-btn');
 
 let products = [];
 
-let counter = products.length + 1;
+
 
 function clearInputs() {
   userInputs[0].value = "";
@@ -82,8 +86,11 @@ function addProductHandler() {
     return;
   }
 
+  var uniq = Date.now().toString(36) + Math.random().toString(36).substr(2);
+  console.log(uniq);
+
   const productElement = {
-    productId: counter,
+    productId: uniq,
     title,
     imageUrl,
     price,
@@ -101,7 +108,7 @@ function addProductHandler() {
   toggleAddPopUp();
   toggleBackDrop();
 
-  counter++;
+ 
 
   renderProduct(
     productElement.productId,
@@ -124,12 +131,42 @@ function renderProduct(id, title, imageUrl, price, description) {
     <h5>price: ${price}</h5>
     <p>Product id : ${id}</p>
     <p>${description}</p>
-    <button class="view" id='${id}'>View</button>
-    <button class="edit" id='${id}'>Edit</button>
-    <button class="delete" id='${id}'>Delete</button>
+    <button class="view" id='${id}' onclick = "viewProduct(${id})">View</button>
+    <button class="edit" id='${id}' onclick = "editProduct(${id})">Edit</button>
+    <button class="delete" id='${id}' onclick = "deleteProduct(${id})">Delete</button>
   </div>`;
   productList.appendChild(productElement);
   updateUI();
+}
+
+//To view a product 
+function viewProduct(id) {
+
+  const jsonId = JSON.stringify(id);
+  localStorage.setItem("selectedProductId", jsonId);
+
+  location.replace('./view.html');
+}
+
+//To Update a product
+function editProduct(id) {
+
+  const jsonId = JSON.stringify(id);
+  localStorage.setItem("selectedProductId", jsonId);
+
+  location.replace('./update.html');
+}
+
+//To delete a product
+function deleteProduct(id){
+  const post = products.find(product => product.productId == id);
+  let index = products.indexOf(post);
+  console.log(index);
+  products.splice(index,1);
+
+  const jsonArray = JSON.stringify(products);
+  localStorage.setItem("ProductArray", jsonArray);
+  productList.children[index].remove();
 }
 
 addBtn.addEventListener("click", addProductHandler);
@@ -158,9 +195,9 @@ function LoadProducts() {
     <h5>price: ${product.price}</h5>
     <p>Product id : ${product.productId}</p>
     <p>${product.description}</p>
-    <button class="view" id='${product.productId}'>View</button>
-    <button class="edit" id='${product.productId}'>Edit</button>
-    <button class="delete" id='${product.productId}'>Delete</button>
+    <button class="view" id='${product.productId}' onclick = "viewProduct(${product.productId})">View</button>
+    <button class="edit" id='${product.productId}' onclick = "editProduct(${product.productId})">Edit</button>
+    <button class="delete" id='${product.productId}' onclick = "deleteProduct(${product.productId})">Delete</button>
   </div>`;
     productList.appendChild(productElement);
   });
@@ -168,90 +205,77 @@ function LoadProducts() {
   updateUI();
 }
 
-
-
-
-//function to wait for the elment
-function waitForElementToDisplay(
-  selector,
-  callback,
-  checkFrequencyInMs,
-  timeoutInMs
-) {
-  var startTimeInMs = Date.now();
-  (function loopSearch() {
-    if (document.querySelector(selector) != null) {
-      callback();
-      return;
-    } else {
-      setTimeout(function () {
-        if (timeoutInMs && Date.now() - startTimeInMs > timeoutInMs) return;
-        loopSearch();
-      }, checkFrequencyInMs);
+//Search function 
+searchBtn.addEventListener('click', () => {
+  const Result = [];
+  products.forEach(product => {
+    if(product.title == searchText.value) {
+      Result.push(product);
     }
-  })();
-}
-
-
-
-
-//For Delete Buttons
-waitForElementToDisplay(".delete", getDeleteBtns, 1000, 9000);
-
-function getDeleteBtns() {
-  const deleteBtns = document.querySelectorAll(".delete");
-  deleteBtns.forEach((deleteBtn) => {
-    deleteBtn.addEventListener("click", function () {
-      const id = this.id;
-      console.log(id);
-      
-
-        
-        //location.reload();
-
-        // let movieIndex = 0;
-        // for(const product of products) {
-        //     if(product.productId === id) {
-        //         break;
-        //     }
-        //     movieIndex++;
-        // }
-        // products.splice(movieIndex,1);
-        // console.log(movieIndex);
-        // console.log(products);
-
-        // products = products.filter((product) => product.productId !== idToRemove);
-
-        // let post;
-        // async function getPost() {
-        //     post = await products.find(product => product.productId === id);
-        // }
-
-        // getPost();
-
-        const post = products.find(product => product.productId == id);
-        let index = products.indexOf(post);
-        console.log(index);
-        products.splice(index,1);
-
-        // productList.remove(post);
-            
-            // let index = products.findIndex(product => product.productId ===   this.id);
-            // // products.splice(index, 1);
-            // console.log(index);
-            
-        console.log('clicked');
-
-        
-        // window.location.reload();   
-        // window.location.reload();
-        const jsonArray = JSON.stringify(products);
-        localStorage.setItem("ProductArray", jsonArray);
-        productList.children[index].remove();
-        //window.location.reload();
-        
-        // LoadProducts();
-    });
   });
-}
 
+  const element = document.querySelector('.searched-product');
+  if(element !== null) {
+    element.remove();
+  }
+
+  const div = document.createElement('div');
+  div.classList.add('searched-product');
+  const heading = document.createElement('h1');
+  heading.innerHTML = 'Result of the Search';
+  const tbl = document.createElement("table");
+  const tblBody = document.createElement("tbody");
+  
+  console.log(Result);
+
+  for(let i=0; i < Result.length; i++) {
+    const row = document.createElement("tr");
+    for(let x in Result[i]) {
+      const temp = Result[i];
+      const cell = document.createElement("td");
+      const cellText = document.createTextNode(`${temp[x]}`);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+    }
+    tblBody.appendChild(row);
+  }
+  
+  tbl.appendChild(tblBody);
+  div.appendChild(tbl);
+
+  divTable.appendChild(div);
+  
+});
+
+clearBtn.addEventListener('click',() => {
+  const element = document.querySelector('.searched-product');
+  if(element !== null) {
+    element.remove();
+  }
+  searchText.value = '';
+});
+
+filterBtn.addEventListener('click',()=>{
+  products.sort(function(a,b) {
+    return (a.price - b.price);
+  });
+
+  productList.innerHTML = '';
+
+  products.forEach(product => {
+    renderProduct(product.productId,product.title,product.imageUrl,product.price,product.description);
+  })
+
+});
+
+
+// function isValidURL(string) 
+// {
+//     var res = 
+//     string.match(/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-
+//     ]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]
+//     \.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|w
+//     ww\.[a-zA-Z0-9]+\.[^\s]{2,})/gi);
+
+//   return (res !== null);
+// };

@@ -166,6 +166,55 @@ input:focus {
   display: none;
 }
 
+.search {
+  width: 80%;
+  background-color: rgb(238, 240, 241);
+  margin: auto;
+  margin-top: 20px;
+  box-sizing: border-box;
+}
+
+.search input {
+  width: 80%;
+  padding: 3px;
+  margin: 10px 5px 10px 10px;
+}
+
+.search-btn {
+  padding: 10px;
+  background-color: rgb(156, 187, 221);
+  color: white;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 8px;
+  margin-left: 10px;
+}
+
+.clear-btn {
+  padding: 10px;
+  background-color: rgb(156, 187, 221);
+  color: white;
+  margin-right: 2px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.filter-btn {
+  padding: 10px;
+  background-color: rgb(156, 187, 221);
+  color: white;
+  margin-right: 2px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
 
 .product-element {
   background-color: rgb(247, 244, 242);
@@ -246,4 +295,36 @@ input:focus {
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
+}
+
+table {
+  width: 100%;
+}
+
+table th {
+  border: 2px solid black;
+  color: black;
+  background-color: rgb(88, 240, 28);
+  padding: 10px;
+}
+
+table td {
+  border: 2px solid black;
+  text-align: center;
+}
+
+.searched-product {
+  margin-top: 10px;
+}
+
+.searched-product h1 {
+  text-align: center;
+  color: rgb(177, 183, 189);
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+table img {
+  height: 200px;
+  width: 110px;
 }
