@@ -27,7 +27,7 @@
         <label for="title">Enter Title:</label> <br />
         <input type="text" id="title" /> <br />
         <label for="imageUrl">Enter Image URL:</label> <br>
-        <input type="text" id="imageUrl" /> <br />
+        <input type="url" id="imageUrl" /> <br />
         <label for="price">Enter Price:</label> <br>
         <input type="text" id="price" /> <br>
         <label for="description">Enter Description:</label> <br>
@@ -53,50 +53,16 @@
     <!--Main Section-->
     <main>
       <div id="poster">Your Personal Product Collection.</div>
+      <div class="search">
+        <input type="text" id="search-text" placeholder="Search a Product">
+        <button class="search-btn">Search</button>
+        <button class="clear-btn">Clear</button>
+        <button class="filter-btn">Filter by Price</button>
+        <div class="table-div">
+         
+        </div>
+      </div>
       <ul id="product-list">
-
-        
-<!-- 
-
-        <li class="product-element">
-          <div class="product-image">
-            <img src="https://stickon-web-mobile-evolution.s3.ap-south-1.amazonaws.com/production/products/base_images/realme-3-pro-newPJQKNQvLYFbwBNHL.png" alt="">
-          </div>
-          <div class="product-description">
-            <h2>Realme 3 pro</h2>
-            <h5>price: 200$</h5>
-            <p>4 GB RAM | 64 GB ROM | Expandable Upto 256 GB
-              16.0 cm (6.3 inch) Full HD+ Display
-              16MP + 5MP | 25MP Front Camera
-              4045 mAh Battery
-              Qualcomm Snapdragon 710 Octa Core 2.2 GHz AIE Processor
-              Dual Nano SIM Slot and Memory Card Slot
-              VOOC Flash Charge 3.0</p>
-            <button class="edit">Edit</button>
-            <button class="delete">Delete</button>
-          </div>
-        </li>
-
-        <li class="product-element">
-          <div class="product-image">
-            <img src="https://stickon-web-mobile-evolution.s3.ap-south-1.amazonaws.com/production/products/base_images/realme-3-pro-newPJQKNQvLYFbwBNHL.png" alt="">
-          </div>
-          <div class="product-description">
-            <h2>Realme 3 pro</h2>
-            <h5>price: 200$</h5>
-            <p>4 GB RAM | 64 GB ROM | Expandable Upto 256 GB
-              16.0 cm (6.3 inch) Full HD+ Display
-              16MP + 5MP | 25MP Front Camera
-              4045 mAh Battery
-              Qualcomm Snapdragon 710 Octa Core 2.2 GHz AIE Processor
-              Dual Nano SIM Slot and Memory Card Slot
-              VOOC Flash Charge 3.0</p>
-            <button class="edit">Edit</button>
-            <button class="delete">Delete</button>
-          </div>
-        </li>
-        -->
-        
       </ul>
     </main>
 

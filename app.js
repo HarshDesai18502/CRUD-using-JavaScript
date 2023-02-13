@@ -7,26 +7,23 @@ const cancelBtn = document.querySelector("#add-popup .cancel-btn");
 const addBtn = document.querySelector("#add-popup .add-btn");
 const userInputs = document.querySelectorAll("input");
 const productList = document.getElementById("product-list");
-let counter = 1;
 
-const products = [
-  {
-    productId: 1,
-    title: "realme 3 pro",
-    imageUrl:
-      "https://stickon-web-mobile-evolution.s3.ap-south-1.amazonaws.com/production/products/base_images/realme-3-pro-newPJQKNQvLYFbwBNHL.png",
-    price: 500,
-    description: "good phone",
-  },
-  {
-    productId: 1,
-    title: "realme 3 pro",
-    imageUrl:
-      "https://stickon-web-mobile-evolution.s3.ap-south-1.amazonaws.com/production/products/base_images/realme-3-pro-newPJQKNQvLYFbwBNHL.png",
-    price: 600,
-    description: "good phone",
-  },
-];
+const searchText = document.getElementById('search-text');
+const searchBtn = document.querySelector('.search-btn');
+const clearBtn = document.querySelector('.clear-btn');
+const divTable = document.querySelector('.table-div');
+
+const filterBtn = document.querySelector('.filter-btn');
+
+let products = [];
+
+
+//Genrate a random number between min and max (Will use this for productId generation)
+function randomIntFromInterval(min, max) { 
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+
 
 function clearInputs() {
   userInputs[0].value = "";
@@ -46,8 +43,7 @@ function toggleBackDrop() {
 function updateUI() {
   if (products.length !== 0) {
     poster.style.display = "none";
-  }
-  else  {
+  } else {
     poster.style.display = "flex";
   }
 }
@@ -73,7 +69,7 @@ backdrop.addEventListener("click", () => {
   clearInputs();
 });
 
-function addMovieHandler() {
+function addProductHandler() {
   const title = userInputs[0].value;
   const imageUrl = userInputs[1].value;
   const price = userInputs[2].value;
@@ -96,8 +92,11 @@ function addMovieHandler() {
     return;
   }
 
+  var random = randomIntFromInterval(1,10000);
+  
+
   const productElement = {
-    productId: counter,
+    productId: random,
     title,
     imageUrl,
     price,
@@ -105,12 +104,17 @@ function addMovieHandler() {
   };
   console.log(productElement);
   products.push(productElement);
+  // convert array to JSON string using JSON.stringify()
+  const jsonArray = JSON.stringify(products);
+
+  // save to localStorage using "array" as the key and jsonArray as the value
+  localStorage.setItem("ProductArray", jsonArray);
   console.log(products);
   clearInputs();
   toggleAddPopUp();
   toggleBackDrop();
 
-  counter++;
+ 
 
   renderProduct(
     productElement.productId,
@@ -133,44 +137,59 @@ function renderProduct(id, title, imageUrl, price, description) {
     <h5>price: ${price}</h5>
     <p>Product id : ${id}</p>
     <p>${description}</p>
-    <button class="edit">Edit</button>
-    <button class="delete">Delete</button>
+    <button class="view" id='${id}' onclick = "viewProduct(${id})">View</button>
+    <button class="edit" id='${id}' onclick = "editProduct(${id})">Edit</button>
+    <button class="delete" id='${id}' onclick = "deleteProduct(${id})">Delete</button>
   </div>`;
   productList.appendChild(productElement);
   updateUI();
 }
 
-addBtn.addEventListener("click", addMovieHandler);
+//To view a product 
+function viewProduct(id) {
 
+  const jsonId = JSON.stringify(id);
+  localStorage.setItem("selectedProductId", jsonId);
 
-// window.addEventListner("load",function(){
-//     products.forEach(product => {
-//         const productElement = document.createElement('li');
-//     productElement.classList.add('product-element');
+  location.replace('./view.html');
+}
 
-//     productElement.innerHTML = `<div class="product-image">
-//     <img src="${product.imageUrl}" alt="${product.title}">
-//   </div>
-//   <div class="product-description">
-//     <h2>${product.title}</h2>
-//     <h5>price: ${product.price}</h5>
-//     <p>Product id : ${product.price}</p>
-//     <p>${product.description}</p>
-//     <button class="edit">Edit</button>
-//     <button class="delete">Delete</button>
-//   </div>`;
-//   productList.appendChild(productElement);
-//     })
-// });
+//To Update a product
+function editProduct(id) {
 
-console.log(products[0].price);
+  const jsonId = JSON.stringify(id);
+  localStorage.setItem("selectedProductId", jsonId);
 
-products.forEach((product) => {
-  console.log(product.price);
-});
+  location.replace('./update.html');
+}
 
-window.onload = function () {
-  products.forEach((product) => {
+//To delete a product
+function deleteProduct(id){
+  const post = products.find(product => product.productId == id);
+  let index = products.indexOf(post);
+  console.log(index);
+  products.splice(index,1);
+
+  const jsonArray = JSON.stringify(products);
+  localStorage.setItem("ProductArray", jsonArray);
+  productList.children[index].remove();
+}
+
+addBtn.addEventListener("click", addProductHandler);
+
+window.onload = LoadProducts;
+
+function LoadProducts() {
+  const str = localStorage.getItem("ProductArray");
+
+  const parsedProducts = JSON.parse(str);
+  if(parsedProducts === null) return;
+  
+  products = parsedProducts;
+
+  
+
+  parsedProducts.forEach((product) => {
     const productElement = document.createElement("li");
     productElement.classList.add("product-element");
 
@@ -180,35 +199,92 @@ window.onload = function () {
   <div class="product-description">
     <h2>${product.title}</h2>
     <h5>price: ${product.price}</h5>
-    <p>Product id : ${product.price}</p>
+    <p>Product id : ${product.productId}</p>
     <p>${product.description}</p>
-    <button class="edit">Edit</button>
-    <button class="delete">Delete</button>
+    <button class="view" id='${product.productId}' onclick = "viewProduct(${product.productId})">View</button>
+    <button class="edit" id='${product.productId}' onclick = "editProduct(${product.productId})">Edit</button>
+    <button class="delete" id='${product.productId}' onclick = "deleteProduct(${product.productId})">Delete</button>
   </div>`;
     productList.appendChild(productElement);
   });
+  counter = products.length + 1
   updateUI();
-};
+}
+
+//Search function 
+searchBtn.addEventListener('click', () => {
+  const Result = [];
+  products.forEach(product => {
+    if(product.title.toUpperCase() == searchText.value.toUpperCase()) {
+      Result.push(product);
+    }
+  });
+
+  const element = document.querySelector('.searched-product');
+  if(element !== null) {
+    element.remove();
+  }
+
+  const div = document.createElement('div');
+  div.classList.add('searched-product');
+  const heading = document.createElement('h1');
+  heading.innerHTML = 'Result of the Search';
+  const tbl = document.createElement("table");
+  const tblBody = document.createElement("tbody");
+  
+  console.log(Result);
+
+  for(let i=0; i < Result.length; i++) {
+    const row = document.createElement("tr");
+    for(let x in Result[i]) {
+      const temp = Result[i];
+      const cell = document.createElement("td");
+      const cellText = document.createTextNode(`${temp[x]}`);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+    }
+    tblBody.appendChild(row);
+  }
+  
+  tbl.appendChild(tblBody);
+  div.appendChild(tbl);
+
+  divTable.appendChild(div);
+  
+});
 
 
-// const myBtns = document.querySelectorAll('.product-element .delete');
+//For clear button
+clearBtn.addEventListener('click',() => {
+  const element = document.querySelector('.searched-product');
+  if(element !== null) {
+    element.remove();
+  }
+  searchText.value = '';
+});
 
-// // deleteBtns[0].addEventListener('click',()=> {
-// //     console.log('i am clicked');
-// // })
+//Filter button
+filterBtn.addEventListener('click',()=>{
+  products.sort(function(a,b) {
+    return (a.price - b.price);
+  });
+
+  productList.innerHTML = '';
+
+  products.forEach(product => {
+    renderProduct(product.productId,product.title,product.imageUrl,product.price,product.description);
+  })
+
+});
 
 
-// myBtns[0].addEventListener('click',()=>{
-//     console.log('i am cliced');
-// })
+// function isValidURL(string) 
+// {
+//     var res = 
+//     string.match(/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-
+//     ]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]
+//     \.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|w
+//     ww\.[a-zA-Z0-9]+\.[^\s]{2,})/gi);
 
-// deleteBtns.forEach(deleteBtn => {
-//     deleteBtn.addEventListener('click',function() {
-//         console.log('i am clicked');
-//         products = [];
-//     })
-// })
-
-// deleteBtn.addEventListener('click',() => {
-//     console.log(this);
-// } );
+//   return (res !== null);
+// };
