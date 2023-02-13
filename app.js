@@ -18,6 +18,12 @@ const filterBtn = document.querySelector('.filter-btn');
 let products = [];
 
 
+//Genrate a random number between min and max (Will use this for productId generation)
+function randomIntFromInterval(min, max) { 
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+
 
 function clearInputs() {
   userInputs[0].value = "";
@@ -86,11 +92,11 @@ function addProductHandler() {
     return;
   }
 
-  var uniq = Date.now().toString(36) + Math.random().toString(36).substr(2);
-  console.log(uniq);
+  var random = randomIntFromInterval(1,10000);
+  
 
   const productElement = {
-    productId: uniq,
+    productId: random,
     title,
     imageUrl,
     price,
@@ -209,7 +215,7 @@ function LoadProducts() {
 searchBtn.addEventListener('click', () => {
   const Result = [];
   products.forEach(product => {
-    if(product.title == searchText.value) {
+    if(product.title.toUpperCase() == searchText.value.toUpperCase()) {
       Result.push(product);
     }
   });
@@ -247,6 +253,8 @@ searchBtn.addEventListener('click', () => {
   
 });
 
+
+//For clear button
 clearBtn.addEventListener('click',() => {
   const element = document.querySelector('.searched-product');
   if(element !== null) {
@@ -255,6 +263,7 @@ clearBtn.addEventListener('click',() => {
   searchText.value = '';
 });
 
+//Filter button
 filterBtn.addEventListener('click',()=>{
   products.sort(function(a,b) {
     return (a.price - b.price);
